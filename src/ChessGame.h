@@ -11,6 +11,7 @@
 #include "core/logic/ChessMove.h"
 #include "core/ChessTeam.h"
 #include "core/data/ChessGameSettings.h"
+#include "core/ui/Screens/TitleScreen.h"
 
 enum class ChessScreen {
     Title,
@@ -47,16 +48,14 @@ class ChessGame {
     void handleClick(
         SDL_MouseButtonEvent event,
         int mouseX,
-        int mouseY,
-        SDL_Rect startButton,
-        SDL_Rect optionsButton,
-        SDL_Rect quitButton,
-        bool& running
+        int mouseY
     );
 
     bool isGameRunning = false;
 
-    ChessScreen currentScreen = ChessScreen::Title;
+    TitleScreen* titleScreen = new TitleScreen();
+
+    GameScreen* currentScreen = titleScreen;
 
     void renderText(
         SDL_Renderer* renderer,
@@ -95,6 +94,7 @@ class ChessGame {
     ChessTeam *blackTeam;
     ChessTeam *whiteTeam;
     ChessMove *moves[];
+
 
 
 

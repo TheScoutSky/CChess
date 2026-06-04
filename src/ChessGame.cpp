@@ -21,36 +21,11 @@ ChessGame::ChessGame(ChessBoard* board, ChessTeam* blackTeam, ChessTeam* whiteTe
 void ChessGame::handleClick(
     SDL_MouseButtonEvent event,
     int mouseX,
-    int mouseY,
-    SDL_Rect startButton,
-    SDL_Rect optionsButton,
-    SDL_Rect quitButton,
-    bool& running
+    int mouseY
 ) {
     (void)event;
 
-    switch (currentScreen) {
-        case ChessScreen::Playing:
-
-            break;
-        case ChessScreen::Title:
-            if (isMouseInside(startButton, mouseX, mouseY)) {
-                currentScreen = ChessScreen::Playing;
-            }
-
-            if (isMouseInside(optionsButton, mouseX, mouseY)) {
-                currentScreen = ChessScreen::Options;
-            }
-
-            if (isMouseInside(quitButton, mouseX, mouseY)) {
-                running = false;
-            }
-
-            break;
-        case ChessScreen::Options:
-
-            break;
-    }
+    currentScreen->handleClick(event, mouseX, mouseY);
 }
 
 
@@ -308,8 +283,10 @@ int ChessGame::openGame() {
 
     // Load Textures
     SDL_Texture* whitePawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_pawn.png");
-    Pawn whitePawn = Pawn(whiteTeam, board->getField(1,3), whitePawnTexture);
+    Pawn whitePawn = Pawn(whiteTeam, board->getField(2,3), whitePawnTexture);
     board->getField(2,3)->setPiece(&whitePawn);
+
+    currentScreen->registerTextures();
 
     bool running = true;
 
@@ -330,33 +307,6 @@ int ChessGame::openGame() {
         int width = rendererWidth;
         int height = rendererHeight;
 
-        int buttonWidth = 320;
-        int buttonHeight = 70;
-        int gap = 25;
-
-        // Calculate total height of all buttons with gaps
-        int totalButtonHeight = (buttonHeight * 3) + (gap * 2);
-
-        SDL_Rect startButton = {
-            width / 2 - buttonWidth / 2,
-            height / 2 - totalButtonHeight / 2,
-            buttonWidth,
-            buttonHeight
-        };
-
-        SDL_Rect optionsButton = {
-            width / 2 - buttonWidth / 2,
-            startButton.y + buttonHeight + gap,
-            buttonWidth,
-            buttonHeight
-        };
-
-        SDL_Rect quitButton = {
-            width / 2 - buttonWidth / 2,
-            optionsButton.y + buttonHeight + gap,
-            buttonWidth,
-            buttonHeight
-        };
 
         SDL_Event event;
 
@@ -369,19 +319,14 @@ int ChessGame::openGame() {
             }
 
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
-                if (currentScreen == ChessScreen::Title) {
-                    running = false;
-                } else {
-                    currentScreen = ChessScreen::Title;
-                }
             }
 
-            if (currentScreen == ChessScreen::Title && event.type == SDL_MOUSEBUTTONDOWN) {
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
                 if (event.button.button == SDL_BUTTON_LEFT) {
                     int mouseX = (int)(event.button.x * scaleX);
                     int mouseY = (int)(event.button.y * scaleY);
 
-                    handleClick(event.button, mouseX, mouseY, startButton, optionsButton, quitButton, running);
+                    handleClick(event.button, mouseX, mouseY);
                 }
             }
         }
@@ -389,43 +334,14 @@ int ChessGame::openGame() {
         SDL_SetRenderDrawColor(renderer, 18, 22, 33, 255);
         SDL_RenderClear(renderer);
 
-        if (currentScreen == ChessScreen::Title) {
-            renderTitleScreen(
-                renderer,
-                titleFont,
-                buttonFont,
-                width,
-                height,
-                startButton,
-                optionsButton,
-                quitButton,
-                scaleX,
-                scaleY
-            );
-        }
+        int logicalMouseX = 0, logicalMouseY = 0;
+        SDL_GetMouseState(&logicalMouseX, &logicalMouseY);
 
-        if (currentScreen == ChessScreen::Playing) {
-            // Get Mouse X and Y
-            int logicalMouseX = 0;
-            int logicalMouseY = 0;
+        int mouseX = static_cast<int>(logicalMouseX * scaleX);
+        int mouseY = static_cast<int>(logicalMouseY * scaleY);
 
-            SDL_GetMouseState(&logicalMouseX, &logicalMouseY);
-
-            // Scale mouse coordinates to match renderer output size
-            int mouseX = (int)(logicalMouseX * scaleX);
-            int mouseY = (int)(logicalMouseY * scaleY);
-
-            renderBoard(renderer, width / 2 - 400, height / 2 - 400, 128, mouseX, mouseY);
-
-            SDL_Color textColor = {255, 255, 255, 255};
-            renderText(renderer, buttonFont, "Playing - ESC to menu", 40, 40, textColor);
-        }
-
-        if (currentScreen == ChessScreen::Options) {
-            SDL_Color textColor = {255, 255, 255, 255};
-            renderText(renderer, titleFont, "Options", width / 2 - 180, height / 4, textColor);
-            renderText(renderer, buttonFont, "Press ESC to go back", width / 2 - 180, height / 2, textColor);
-        }
+        currentScreen->renderScreen(renderer);
+        currentScreen->renderButtons(renderer, mouseX, mouseY);
 
         SDL_RenderPresent(renderer);
     }

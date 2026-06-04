@@ -36,10 +36,12 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/ChessPieces/Pawn.h
         src/core/data/ChessGameSettings.cpp
         src/core/data/ChessGameSettings.h
-        src/core/interfaces/GameScreen.cpp
-        src/core/interfaces/GameScreen.h
+        src/core/ui/GameScreen.cpp
+        src/core/ui/GameScreen.h
         src/core/ui/CButton.cpp
         src/core/ui/CButton.h
+        src/core/ui/Screens/TitleScreen.cpp
+        src/core/ui/Screens/TitleScreen.h
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE
         SDL2::SDL2

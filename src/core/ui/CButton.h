@@ -16,6 +16,8 @@ class CButton {
     CButton(std::string text, TTF_Font* font, SDL_Rect rect)
         : text(std::move(text)), rect(rect), font(font) {};
 
+    bool isButtonAt(int x, int y) const;
+
     // --- Setters --- //
     void setTextColor(SDL_Color textColor) {
         this->textColor = textColor;
@@ -38,12 +40,12 @@ class CButton {
     }
 
     // --- Rendering ---//
-    void renderButton(SDL_Renderer *renderer, bool isHovered);
-
-    private:
+    void renderButton(SDL_Renderer *renderer, bool isHovered) const;
 
     // --- Event Handling --- //
     void handleClick(SDL_MouseButtonEvent event, int mouseX, int mouseY);
+
+    private:
 
     // --- Rendering --- //
     void renderText(SDL_Renderer *renderer) const;

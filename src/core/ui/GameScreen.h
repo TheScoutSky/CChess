@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <string>
 
-#include "../ui/CButton.h"
+#include "CButton.h"
 
 
 class GameScreen {
@@ -17,16 +17,31 @@ class GameScreen {
 
     virtual ~GameScreen() = default;
 
+    virtual void registerTextures();
+
+    void addButton(const std::string &name, const CButton &button) {
+        buttons.insert(std::pair<std::string, CButton>(name, button));
+    }
+
     CButton &getButton(const std::string &name) {
         return buttons.at(name);
+    }
+
+    CButton* getButtonAt(int x, int y) {
+        for (auto& [name, button] : buttons) {
+            if (button.isButtonAt(x, y)) {
+                return &button;
+            }
+        }
+        return nullptr;
     }
 
     // --- Event Handling --- //
     void handleClick(SDL_MouseButtonEvent event, int mouseX, int mouseY);
 
     // --- Rendering --- //
-    void renderScreen();
-    void renderButtons();
+    virtual void renderScreen(SDL_Renderer* renderer);
+    virtual void renderButtons(SDL_Renderer* renderer,int mouseX, int mouseY);
 
     private:
     std::unordered_map<std::string, CButton> buttons;

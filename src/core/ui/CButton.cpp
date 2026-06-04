@@ -7,6 +7,13 @@
 #include <iostream>
 
 
+bool CButton::isButtonAt(int x, int y) const {
+    return x >= rect.x &&
+           x <= rect.x + rect.w &&
+           y >= rect.y &&
+           y <= rect.y + rect.h;
+}
+
 // ------------- Event Handling ---------------- //
 void CButton::handleClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) {
         if (event.button == SDL_BUTTON_LEFT) {
@@ -22,7 +29,7 @@ void CButton::handleClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) {
 }
 
 // ------------- Rendering ----------------- //
-void CButton::renderButton(SDL_Renderer *renderer, bool isHovered) {
+void CButton::renderButton(SDL_Renderer *renderer, bool isHovered) const {
     if (isHovered) {
         SDL_SetRenderDrawColor(renderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a);
     } else if (isSelected) {
