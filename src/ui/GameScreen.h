@@ -20,7 +20,7 @@ public:
     virtual ~GameScreen() = default;
 
     // --- Resources ---
-    virtual void registerTextures();
+    virtual void preload();
 
     // --- Buttons ---
     void addButton(const std::string& name, const CButton& button) {
@@ -38,17 +38,20 @@ public:
         return nullptr;
     }
 
+
     // --- Event handling ---
     void handleClick(SDL_MouseButtonEvent event, int mouseX, int mouseY);
+    virtual void onClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) {};
 
     // --- Rendering ---
-    virtual void renderScreen(SDL_Renderer* renderer);
+    virtual void renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY);
     virtual void renderButtons(SDL_Renderer* renderer, int mouseX, int mouseY);
     ChessGame* gameInstance;
 
 private:
     // --- State ---
     std::unordered_map<std::string, CButton> buttons;
+
 };
 
 #endif // CCHESS_GAMESCREEN_H

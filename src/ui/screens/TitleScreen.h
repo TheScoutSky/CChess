@@ -15,10 +15,10 @@ public:
     TitleScreen(ChessGame* gameInstance): GameScreen(gameInstance) {};
 
     // --- Rendering ---
-    void renderScreen(SDL_Renderer* renderer) override;
+    void renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY) override;
 
     // --- Resources ---
-    void registerTextures() override;
+    void preload() override;
 };
 
 #endif // CCHESS_TITLESCREEN_H

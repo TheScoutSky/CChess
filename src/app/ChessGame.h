@@ -25,7 +25,7 @@ public:
     int openGame();
 
     void switchScreen(GameScreen* gameScreen) {
-        gameScreen->registerTextures();
+        gameScreen->preload();
         currentScreen = gameScreen;
     };
 
@@ -57,8 +57,6 @@ private:
     static SDL_Texture* loadTexture(SDL_Renderer* renderer, const char* path);
 
     // --- Rendering ---
-    void renderBoard(SDL_Renderer* renderer, int xOffset, int yOffset, int fieldSize, int mouseX,
-                     int mouseY);
     void renderBlackTeam();
     void renderWhiteTeam();
 

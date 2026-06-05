@@ -13,10 +13,16 @@ public:
     PlayingScreen(ChessGame* gameInstance) : GameScreen(gameInstance) {};
 
     // --- Rendering ---
-    void renderScreen(SDL_Renderer* renderer) override;
+    void renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY) override;
+
+    // --- Event Handling ---
+    void onClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) override;
 
     // --- Resources ---
-    void registerTextures() override;
+    void preload() override;
+
+
+    private:
 };
 
 

@@ -8,7 +8,7 @@
 // Construction
 // --------------------------------------------------
 
-ChessBoard::ChessBoard(int width, int height) {
+ChessBoard::ChessBoard(int width, int height, int fieldSize, int xOffset, int yOffset) {
     this->width = width;
     this->height = height;
     this->board.reserve(width * height);
@@ -18,7 +18,7 @@ ChessBoard::ChessBoard(int width, int height) {
         for (int x = 0; x < width; x++) {
             ChessTeamColor color = (x + y) % 2 == 0 ? ChessTeamColor::WHITE : ChessTeamColor::BLACK;
 
-            ChessField field = ChessField(i++, x, y, color);
+            ChessField field = ChessField(i++, (x * fieldSize) + xOffset, (y * fieldSize) + yOffset, fieldSize, color);
             this->board.push_back(field);
         }
     }
@@ -36,15 +36,10 @@ ChessField* ChessBoard::getField(int x, int y) {
 // Rendering
 // --------------------------------------------------
 
-void ChessBoard::draw(SDL_Renderer *renderer, int xOffset, int yOffset, int fieldSize, int mouseX, int mouseY) {
+void ChessBoard::draw(SDL_Renderer *renderer, int mouseX, int mouseY) {
     for (auto chess_field : board) {
-        SDL_Rect fieldRect = {xOffset + chess_field.x * fieldSize,
-                              yOffset + chess_field.y * fieldSize, fieldSize, fieldSize};
+        bool isHovered = chess_field.isClicked(mouseX, mouseY);
 
-        bool isHovered = mouseX >= fieldRect.x && mouseX <= fieldRect.x + fieldRect.w &&
-                         mouseY >= fieldRect.y && mouseY <= fieldRect.y + fieldRect.h;
-
-        chess_field.draw(renderer, xOffset + chess_field.x * fieldSize,
-                         yOffset + chess_field.y * fieldSize, fieldSize, isHovered, false);
+        chess_field.draw(renderer, isHovered);
     }
 }

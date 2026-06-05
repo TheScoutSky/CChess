@@ -12,7 +12,7 @@
 // Resources
 // --------------------------------------------------
 
-void TitleScreen::registerTextures() {
+void TitleScreen::preload() {
     TTF_Font* titleFont =
         TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 96);
     TTF_Font* buttonFont =
@@ -55,5 +55,5 @@ void TitleScreen::registerTextures() {
 // Rendering
 // --------------------------------------------------
 
-void TitleScreen::renderScreen(SDL_Renderer* renderer) {
+void TitleScreen::renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY) {
 }

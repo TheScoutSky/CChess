@@ -10,16 +10,8 @@
 // Rendering
 // --------------------------------------------------
 
-bool ChessField::draw(SDL_Renderer* renderer, int x, int y, int size, bool isHovered,
-                      bool isSelected) {
+bool ChessField::draw(SDL_Renderer* renderer, bool isHovered) {
     // --- Field rectangle ---
-    SDL_Rect rect;
-    rect.x = x;
-    rect.y = y;
-    rect.w = size;
-    rect.h = size;
-
-    this->rect = rect;
 
     // --- Base field color ---
     if (color == WHITE) {
@@ -33,7 +25,7 @@ bool ChessField::draw(SDL_Renderer* renderer, int x, int y, int size, bool isHov
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     if (isSelected) {
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 10);
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 50);
         SDL_RenderFillRect(renderer, &rect);
     } else if (isHovered) {
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 51);

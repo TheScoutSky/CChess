@@ -59,19 +59,6 @@ SDL_Texture* ChessGame::loadTexture(SDL_Renderer* renderer, const char* path) {
 // Rendering
 // --------------------------------------------------
 
-void ChessGame::renderBoard(SDL_Renderer* renderer, int xOffset, int yOffset, int fieldSize,
-                            int mouseX, int mouseY) {
-
-    for (auto chess_field : board->board) {
-        SDL_Rect fieldRect = {xOffset + chess_field.x * fieldSize,
-                              yOffset + chess_field.y * fieldSize, fieldSize, fieldSize};
-
-        bool hovered = isMouseInside(fieldRect, mouseX, mouseY);
-
-        chess_field.draw(renderer, xOffset + chess_field.x * fieldSize,
-                         yOffset + chess_field.y * fieldSize, fieldSize, hovered, false);
-    }
-}
 
 void ChessGame::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y,
                            SDL_Color color) {
@@ -234,7 +221,7 @@ int ChessGame::openGame() {
     Pawn whitePawn = Pawn(whiteTeam, board->getField(2, 3), whitePawnTexture);
     board->getField(2, 3)->setPiece(&whitePawn);
 
-    currentScreen->registerTextures();
+    currentScreen->preload();
 
     isGameRunning = true;
 
@@ -289,7 +276,7 @@ int ChessGame::openGame() {
         mouseX = static_cast<int>(logicalMouseX * scaleX);
         mouseY = static_cast<int>(logicalMouseY * scaleY);
 
-        currentScreen->renderScreen(renderer);
+        currentScreen->renderScreen(renderer, mouseX, mouseY);
         currentScreen->renderButtons(renderer, mouseX, mouseY);
 
         SDL_RenderPresent(renderer);

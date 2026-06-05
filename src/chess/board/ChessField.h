@@ -14,7 +14,7 @@ class ChessField {
 
 public:
     // --- Board position ---
-    int index, x, y;
+    int index, x, y, size;
 
     // --- Appearance ---
     ChessTeamColor color;
@@ -22,11 +22,14 @@ public:
     SDL_Rect rect;
 
     // --- Construction ---
-    ChessField(int index, int x, int y, ChessTeamColor color)
-        : index(index), x(x), y(y), color(color) {};
+    ChessField(int index, int x, int y, int size, ChessTeamColor color)
+        : index(index), x(x), y(y), size(size), color(color) {
+        SDL_Rect rect = {x, y, size, size};
+        this->rect = rect;
+    };
 
     // --- Rendering ---
-    bool draw(SDL_Renderer* renderer, int x, int y, int size, bool isHovered, bool isSelected);
+    bool draw(SDL_Renderer* renderer, bool isHovered);
 
     // --- Piece access ---
     void setPiece(ChessPiece* piece) { this->piece = piece; };
@@ -34,6 +37,13 @@ public:
     bool hasPiece() { return this->piece != nullptr; };
 
     ChessPiece* getPiece() { return this->piece; }
+
+    // --- Event Handling ---
+    bool isClicked(int mouseX, int mouseY) {
+        return mouseX >= x && mouseX <= x + size && mouseY >= y && mouseY <= y + size;
+    }
+
+    bool isSelected = false;
 
 private:
     // --- State ---

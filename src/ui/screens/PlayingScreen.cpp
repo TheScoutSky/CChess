@@ -9,8 +9,8 @@
 
 #include "app/ChessGame.h"
 
-void PlayingScreen::registerTextures() {
-    std::cout << "PlayingScreen::registerTextures" << std::endl;
+void PlayingScreen::preload() {
+    std::cout << "PlayingScreen::preload" << std::endl;
     TTF_Font* buttonFont = TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 36);
     CButton backButton = CButton("Back to Title", buttonFont, SDL_Rect{20, 20, 200, 50});
     backButton.setButtonColor({70, 130, 180, 255});
@@ -23,6 +23,17 @@ void PlayingScreen::registerTextures() {
     addButton("back", backButton);
 }
 
-void PlayingScreen::renderScreen(SDL_Renderer *renderer) {
-    gameInstance->getBoard()->draw(renderer, 100, 100, gameInstance->getSettings()->fieldSize, gameInstance->getMouseX(), gameInstance->getMouseY());
+void PlayingScreen::onClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) {
+
+    for (auto &field : gameInstance->getBoard()->board) {
+        if (field.isClicked(mouseX, mouseY)) {
+            if (field.hasPiece()) field.isSelected = !field.isSelected;
+            std::cout << "Field " << field.x << ", " << field.y << " clicked. Selected: " << field.isSelected << std::endl;
+        }
+    }
+}
+
+
+void PlayingScreen::renderScreen(SDL_Renderer *renderer, int mouseX, int mouseY) {
+    gameInstance->getBoard()->draw(renderer, mouseX, mouseY);
 }

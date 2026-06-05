@@ -13,6 +13,7 @@ void GameScreen::handleClick(SDL_MouseButtonEvent event, int mouseX, int mouseY)
     if (button) {
         button->handleClick(event, mouseX, mouseY);
     }
+   onClick(event, mouseX, mouseY);
 }
 
 // --------------------------------------------------
@@ -26,12 +27,12 @@ void GameScreen::renderButtons(SDL_Renderer* renderer, int mouseX, int mouseY) {
     }
 }
 
-void GameScreen::renderScreen(SDL_Renderer* renderer) {
+void GameScreen::renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY) {
 }
 
 // --------------------------------------------------
 // Resources
 // --------------------------------------------------
 
-void GameScreen::registerTextures() {
+void GameScreen::preload() {
 }
