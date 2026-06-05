@@ -1,3 +1,5 @@
+.DS_Store
 .idea/
+.rename-backup/
 cmake-build-*/
 build/

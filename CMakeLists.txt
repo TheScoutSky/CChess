@@ -17,32 +17,42 @@ find_package(SDL2_image 2.0 CONFIG REQUIRED)
 find_package(SDL2_mixer 2.0 CONFIG REQUIRED)
 find_package(SDL2_net 2.0 CONFIG REQUIRED)
 
-add_executable(${PROJECT_NAME} src/main.cpp
-        src/core/ChessBoard.cpp
-        src/core/ChessBoard.h
-        src/core/ChessField.cpp
-        src/core/ChessField.h
-        src/core/interfaces/ChessPiece.cpp
-        src/core/interfaces/ChessPiece.h
-        src/ChessGame.cpp
-        src/ChessGame.h
-        src/core/ChessTeam.cpp
-        src/core/ChessTeam.h
-        src/core/logic/ChessMoveSet.cpp
-        src/core/logic/ChessMoveSet.h
-        src/core/logic/ChessMove.cpp
-        src/core/logic/ChessMove.h
-        src/ChessPieces/Pawn.cpp
-        src/ChessPieces/Pawn.h
-        src/core/data/ChessGameSettings.cpp
-        src/core/data/ChessGameSettings.h
-        src/core/ui/GameScreen.cpp
-        src/core/ui/GameScreen.h
-        src/core/ui/CButton.cpp
-        src/core/ui/CButton.h
-        src/core/ui/Screens/TitleScreen.cpp
-        src/core/ui/Screens/TitleScreen.h
+add_executable(${PROJECT_NAME}
+        src/main.cpp
+
+        src/app/ChessGame.cpp
+        src/app/ChessGame.h
+
+        src/chess/board/ChessBoard.cpp
+        src/chess/board/ChessBoard.h
+        src/chess/board/ChessField.cpp
+        src/chess/board/ChessField.h
+
+        src/chess/model/ChessGameSettings.cpp
+        src/chess/model/ChessGameSettings.h
+        src/chess/model/ChessTeam.cpp
+        src/chess/model/ChessTeam.h
+
+        src/chess/moves/ChessMove.cpp
+        src/chess/moves/ChessMove.h
+        src/chess/moves/ChessMoveSet.cpp
+        src/chess/moves/ChessMoveSet.h
+
+        src/chess/pieces/ChessPiece.cpp
+        src/chess/pieces/ChessPiece.h
+        src/chess/pieces/Pawn.cpp
+        src/chess/pieces/Pawn.h
+
+        src/ui/CButton.cpp
+        src/ui/CButton.h
+        src/ui/GameScreen.cpp
+        src/ui/GameScreen.h
+        src/ui/screens/TitleScreen.cpp
+        src/ui/screens/TitleScreen.h
+        src/ui/screens/PlayingScreen.cpp
+        src/ui/screens/PlayingScreen.h
 )
+target_include_directories(${PROJECT_NAME} PRIVATE src)
 target_link_libraries(${PROJECT_NAME} PRIVATE
         SDL2::SDL2
         SDL2_ttf::SDL2_ttf

@@ -1,24 +1,16 @@
 #define SDL_MAIN_HANDLED
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_net.h>
-#include <SDL_ttf.h>
 
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-
-#include "ChessGame.h"
-#include "ChessPieces/Pawn.h"
+#include "app/ChessGame.h"
+#include "chess/pieces/Pawn.h"
 
 int main() {
 
     auto* blackTeam = new ChessTeam(ChessTeamColor::BLACK);
     auto* whiteTeam = new ChessTeam(ChessTeamColor::WHITE);
     auto* board = new ChessBoard(8, 8);
+    auto* settings = new ChessGameSettings();
 
-    auto* game = new ChessGame(board, whiteTeam, blackTeam);
+    auto* game = new ChessGame(board, whiteTeam, blackTeam, settings);
 
     game->openGame();
     return 0;
