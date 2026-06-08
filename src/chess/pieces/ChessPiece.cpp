@@ -10,7 +10,11 @@
 // --------------------------------------------------
 
 bool ChessPiece::canMoveTo(ChessField* field) {
-    ChessMove move = ChessMove(this, position, field);
+    if (field == nullptr || this->position == nullptr || this->moveSet == nullptr) {
+        return false;
+    }
+
+    ChessMove move(this, position, field);
     return this->moveSet->isMoveAllowed(move);
 };
 
@@ -19,13 +23,11 @@ bool ChessPiece::canMoveTo(ChessField* field) {
 // --------------------------------------------------
 
 bool ChessPiece::draw(SDL_Renderer* renderer, int x, int y, int fieldSize) {
-    SDL_Texture* texture = this->texture; // falls du eine Textur im Piece speicherst
-
-    if (!texture) {
+    if (!this->texture) {
         return false;
     }
 
     SDL_Rect dstRect = {x, y, fieldSize, fieldSize};
-    SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+    SDL_RenderCopy(renderer, this->texture, nullptr, &dstRect);
     return true;
 }

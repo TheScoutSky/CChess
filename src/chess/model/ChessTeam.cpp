@@ -9,5 +9,3 @@
 // Construction
 // --------------------------------------------------
 
-ChessTeam::ChessTeam(ChessTeamColor color) : color(color) {
-}

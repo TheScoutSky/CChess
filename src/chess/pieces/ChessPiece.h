@@ -21,21 +21,29 @@ public:
 
     // --- Movement ---
     virtual bool canMoveTo(ChessField* field);
-    virtual void moveTo(ChessField* field) { field->setPiece(this); };
+    virtual void moveTo(ChessField* field) {
+        position->setPiece(nullptr);
+        position = field;
+        field->setPiece(this);
+    };
 
     // --- Capture state ---
     virtual void capturedBy(ChessPiece& piece) { this->isCaptured = true; };
 
     // --- Rendering ---
-    virtual bool draw(SDL_Renderer* renderer, int x, int y, int fieldSize);
+     virtual bool draw(SDL_Renderer* renderer, int x, int y, int fieldSize);
 
-private:
-    // --- State ---
-    bool isCaptured = false;
-    std::unique_ptr<ChessMoveSet> moveSet;
     ChessTeam* team;
-    ChessField* position;
-    SDL_Texture* texture = nullptr;
+
+ protected:
+     // --- State ---
+     SDL_Texture* texture = nullptr;
+
+ private:
+     // --- State ---
+     bool isCaptured = false;
+     std::unique_ptr<ChessMoveSet> moveSet;
+     ChessField* position;
 };
 
 #endif // CCHESS_CHESSPIECE_H

@@ -51,6 +51,7 @@ public:
 
     TitleScreen* titleScreen = new TitleScreen(this);
     PlayingScreen* playingScreen = new PlayingScreen(this);
+    ChessField* selectedField = nullptr;
 
 private:
     // --- Resource loading ---
@@ -97,6 +98,7 @@ private:
 
     // --- Mouse State ---
     int mouseX, mouseY;
+
 
     ChessMove* moves[];
 };

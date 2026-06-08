@@ -13,11 +13,11 @@ enum ChessTeamColor {
 class ChessTeam {
 public:
     // --- Construction ---
-    ChessTeam(ChessTeamColor color);
+    ChessTeam(ChessTeamColor color) : color(color) {};
+    ChessTeamColor color;
 
 private:
     // --- State ---
-    ChessTeamColor color;
 };
 
 #endif // CCHESS_CHESSTEAM_H

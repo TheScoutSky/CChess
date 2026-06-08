@@ -216,10 +216,13 @@ int ChessGame::openGame() {
     }
 
     // --- Asset loading ---
-    SDL_Texture* whitePawnTexture = loadTexture(
-        renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_pawn.png");
-    Pawn whitePawn = Pawn(whiteTeam, board->getField(2, 3), whitePawnTexture);
-    board->getField(2, 3)->setPiece(&whitePawn);
+     SDL_Texture* whitePawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_pawn.png");
+     SDL_Texture* blackPawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_pawn.png");
+     Pawn* whitePawn = new Pawn(whiteTeam, board->getField(2, 3), whitePawnTexture);
+     board->getField(2, 3)->setPiece(whitePawn);
+
+    Pawn* blackPawn = new Pawn(blackTeam, board->getField(1, 1), blackPawnTexture);
+    board->getField(1, 1)->setPiece(blackPawn);
 
     currentScreen->preload();
 

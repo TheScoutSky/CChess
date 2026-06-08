@@ -5,6 +5,7 @@
 #ifndef CCHESS_PAWN_H
 #define CCHESS_PAWN_H
 #include "chess/pieces/ChessPiece.h"
+#include <memory>
 
 class PawnMoveSet : public ChessMoveSet {
 public:
@@ -19,16 +20,15 @@ class Pawn : public ChessPiece {
 public:
     // --- Construction ---
     Pawn(ChessTeam* team, ChessField* position, SDL_Texture* texture)
-        : ChessPiece(std::unique_ptr<PawnMoveSet>(), team, position) {
+        : ChessPiece(std::make_unique<PawnMoveSet>(), team, position) {
         this->texture = texture;
     };
 
+    bool canMoveTo(ChessField* field) override;
+
     // --- Rendering ---
     bool draw(SDL_Renderer* renderer, int x, int y, int fieldSize) override;
-
-private:
-    // --- State ---
-    SDL_Texture* texture = nullptr;
 };
+
 
 #endif // CCHESS_PAWN_H
