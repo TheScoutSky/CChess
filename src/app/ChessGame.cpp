@@ -226,7 +226,7 @@ int ChessGame::openGame() {
 
     Pawn* blackPawn = new Pawn(blackTeam, board->getField(1, 1), blackPawnTexture);
     board->getField(1, 1)->setPiece(blackPawn);
-    
+
     Rook* whiteRook = new Rook(whiteTeam, board->getField(0, 7), whiteRookTexture);
     board->getField(0, 7)->setPiece(whiteRook);
 

@@ -53,6 +53,11 @@ public:
     PlayingScreen* playingScreen = new PlayingScreen(this);
     ChessField* selectedField = nullptr;
 
+    ChessTeam* blackTeam;
+    ChessTeam* whiteTeam;
+
+    ChessTeam* currentTeam = whiteTeam;
+
 private:
     // --- Resource loading ---
     static SDL_Texture* loadTexture(SDL_Renderer* renderer, const char* path);
@@ -79,7 +84,6 @@ private:
 
     GameScreen* currentScreen = titleScreen;
 
-
     static void renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y,
                            SDL_Color color);
 
@@ -93,8 +97,7 @@ private:
     // --- Game state ---
     ChessGameSettings* settings;
     ChessBoard* board;
-    ChessTeam* blackTeam;
-    ChessTeam* whiteTeam;
+
 
     // --- Mouse State ---
     int mouseX, mouseY;
