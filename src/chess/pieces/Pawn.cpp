@@ -15,25 +15,22 @@ bool PawnMoveSet::isMoveAllowed(ChessMove move) {
         return false;
     }
 
-    const int step = move.from->size;
-    const int dx = move.to->x - move.from->x;
-    const int dy = move.to->y - move.from->y;
-    const int direction = (move.piece->team->color == WHITE) ? step : -step;
+        int direction = move.piece->team->color == ChessTeamColor::WHITE ? 1 : -1;
+        int startRow = move.piece->team->color == ChessTeamColor::WHITE ? 1 : 6;
 
-    if (dx == 0) {
-        if (dy == direction && !move.to->hasPiece()) {
+        int dx = move.to->x - move.from->x;
+        int dy = move.to->y - move.from->y;
+
+        // --- Standard move --- //
+        if (dx == 0 && dy == direction && !move.to->hasPiece()) {
             return true;
         }
 
-        // Allow two-field advance if unobstructed target is empty.
-        if (dy == 2 * direction && !move.to->hasPiece()) {
+        // --- Initial double move --- //
+        if (dx == 0 && dy == 2 * direction && move.from->y == startRow &&
+            !move.to->hasPiece()) {
             return true;
         }
-    }
-
-    if (std::abs(dx) == step && dy == direction && move.to->hasPiece()) {
-        return move.to->getPiece()->team->color != move.piece->team->color;
-    }
 
     return false;
 };
@@ -52,6 +49,3 @@ bool Pawn::draw(SDL_Renderer* renderer, int x, int y, int fieldSize) {
     return true;
 }
 
-bool Pawn::canMoveTo(ChessField* field) {
-    return ChessPiece::canMoveTo(field);
-}

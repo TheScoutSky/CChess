@@ -4,13 +4,15 @@
 
 #include "chess/board/ChessBoard.h"
 
+#include "chess/pieces/ChessPiece.h"
+
 // --------------------------------------------------
 // Construction
 // --------------------------------------------------
 
-ChessBoard::ChessBoard(int width, int height, int fieldSize, int xOffset, int yOffset) {
-    this->width = width;
-    this->height = height;
+ChessBoard::ChessBoard(ChessGameSettings* settings) {
+    this->width = settings->cols;
+    this->height = settings->rows;
     this->board.reserve(width * height);
 
     int i = 0;
@@ -18,7 +20,7 @@ ChessBoard::ChessBoard(int width, int height, int fieldSize, int xOffset, int yO
         for (int x = 0; x < width; x++) {
             ChessTeamColor color = (x + y) % 2 == 0 ? ChessTeamColor::WHITE : ChessTeamColor::BLACK;
 
-            ChessField field = ChessField(i++, (x * fieldSize) + xOffset, (y * fieldSize) + yOffset, fieldSize, color);
+            ChessField field = ChessField(i++, x, y, color, settings);
             this->board.push_back(field);
         }
     }
@@ -36,10 +38,10 @@ ChessField* ChessBoard::getField(int x, int y) {
 // Rendering
 // --------------------------------------------------
 
-void ChessBoard::draw(SDL_Renderer *renderer, int mouseX, int mouseY) {
+void ChessBoard::draw(SDL_Renderer *renderer, int mouseX, int mouseY, ChessField* selectedField) {
     for (auto chess_field : board) {
         bool isHovered = chess_field.isClicked(mouseX, mouseY);
-
-        chess_field.draw(renderer, isHovered);
+        bool isHighlighted = (selectedField != nullptr && selectedField->hasPiece() && selectedField->getPiece()->canMoveTo(&chess_field));
+        chess_field.draw(renderer, isHovered, isHighlighted);
     }
 }

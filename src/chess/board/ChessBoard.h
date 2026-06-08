@@ -12,7 +12,7 @@ class ChessBoard {
 
 public:
     // --- Construction ---
-    ChessBoard(int width, int height, int fieldSize, int xOffset, int yOffset);
+    ChessBoard(ChessGameSettings* settings);
 
     // --- Field access ---
     ChessField* getField(int x, int y);
@@ -20,7 +20,7 @@ public:
     // --- Fields ---
     std::vector<ChessField> board;
 
-    void draw(SDL_Renderer* renderer, int mouseX, int mouseY);
+    void draw(SDL_Renderer* renderer, int mouseX, int mouseY, ChessField* selectedField);
 
 private:
     // --- Board dimensions ---

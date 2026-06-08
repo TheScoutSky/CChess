@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "chess/pieces/Pawn.h"
+#include "chess/pieces/Rook.h"
 
 // --------------------------------------------------
 // Construction
@@ -216,13 +217,18 @@ int ChessGame::openGame() {
     }
 
     // --- Asset loading ---
-     SDL_Texture* whitePawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_pawn.png");
-     SDL_Texture* blackPawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_pawn.png");
-     Pawn* whitePawn = new Pawn(whiteTeam, board->getField(2, 3), whitePawnTexture);
-     board->getField(2, 3)->setPiece(whitePawn);
+    SDL_Texture* whitePawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_pawn.png");
+    SDL_Texture* blackPawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_pawn.png");
+    SDL_Texture* whiteRookTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_rook.png");
+
+    Pawn* whitePawn = new Pawn(whiteTeam, board->getField(2, 6), whitePawnTexture);
+    board->getField(2, 6)->setPiece(whitePawn);
 
     Pawn* blackPawn = new Pawn(blackTeam, board->getField(1, 1), blackPawnTexture);
     board->getField(1, 1)->setPiece(blackPawn);
+    
+    Rook* whiteRook = new Rook(whiteTeam, board->getField(0, 7), whiteRookTexture);
+    board->getField(0, 7)->setPiece(whiteRook);
 
     currentScreen->preload();
 
@@ -261,8 +267,8 @@ int ChessGame::openGame() {
 
             if (event.type == SDL_MOUSEBUTTONDOWN) {
                 if (event.button.button == SDL_BUTTON_LEFT) {
-                    int mouseX = (int)(event.button.x * scaleX);
-                    int mouseY = (int)(event.button.y * scaleY);
+                    mouseX = (int)(event.button.x * scaleX);
+                    mouseY = (int)(event.button.y * scaleY);
 
                     handleClick(event.button, mouseX, mouseY);
                 }

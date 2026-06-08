@@ -16,6 +16,7 @@ public:
 
     // --- Board settings --- //
     int fieldSize = 128, boardOffsetX = 100, boardOffsetY = 100;
+    int rows = 8, cols = 8;
 
 };
 

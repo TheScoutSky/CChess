@@ -39,8 +39,8 @@ void PlayingScreen::onClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) 
                      field.isSelected = true;
                      gameInstance->selectedField = &field;
                  } else if (gameInstance->selectedField->getPiece()->canMoveTo(&field)) {
-                     std::cout << "Moving piece from " << gameInstance->selectedField->x << ", " << gameInstance->selectedField->y
-                               << " to " << field.x << ", " << field.y << std::endl;
+                     std::cout << "Moving piece from " << gameInstance->selectedField->realX << ", " << gameInstance->selectedField->realY
+                               << " to " << field.realX << ", " << field.realY << std::endl;
                      // Move piece to target field
                      gameInstance->selectedField->getPiece()->moveTo(&field);
                      gameInstance->selectedField->isSelected = false;
@@ -52,12 +52,12 @@ void PlayingScreen::onClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) 
                      gameInstance->selectedField = &field;
                  }
              }
-             std::cout << "Field " << field.x << ", " << field.y << " clicked. Selected: " << field.isSelected << std::endl;
+             std::cout << "Field " << field.realX << ", " << field.realY << " clicked. Selected: " << field.isSelected << std::endl;
          }
      }
  }
 
 
 void PlayingScreen::renderScreen(SDL_Renderer *renderer, int mouseX, int mouseY) {
-    gameInstance->getBoard()->draw(renderer, mouseX, mouseY);
+    gameInstance->getBoard()->draw(renderer, mouseX, mouseY, gameInstance->selectedField);
 }

@@ -10,7 +10,7 @@
 // Rendering
 // --------------------------------------------------
 
-bool ChessField::draw(SDL_Renderer* renderer, bool isHovered) {
+bool ChessField::draw(SDL_Renderer* renderer, bool isHovered, bool isHighlighted) {
     // --- Field rectangle ---
 
     // --- Base field color ---
@@ -30,11 +30,14 @@ bool ChessField::draw(SDL_Renderer* renderer, bool isHovered) {
     } else if (isHovered) {
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 51);
         SDL_RenderFillRect(renderer, &rect);
+    } else if (isHighlighted) {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 50);
+        SDL_RenderFillRect(renderer, &rect);
     }
 
     // --- Piece rendering ---
     if (hasPiece()) {
-        getPiece()->draw(renderer, x, y, size);
+        getPiece()->draw(renderer, realX, realY, size);
     }
     return true;
 }

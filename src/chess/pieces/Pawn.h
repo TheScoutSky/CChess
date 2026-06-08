@@ -24,7 +24,6 @@ public:
         this->texture = texture;
     };
 
-    bool canMoveTo(ChessField* field) override;
 
     // --- Rendering ---
     bool draw(SDL_Renderer* renderer, int x, int y, int fieldSize) override;

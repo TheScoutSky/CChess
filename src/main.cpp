@@ -5,10 +5,10 @@
 
 int main() {
 
+    auto* settings = new ChessGameSettings();
     auto* blackTeam = new ChessTeam(ChessTeamColor::BLACK);
     auto* whiteTeam = new ChessTeam(ChessTeamColor::WHITE);
-    auto* board = new ChessBoard(8, 8, 128, 800, 350);
-    auto* settings = new ChessGameSettings();
+    auto* board = new ChessBoard(settings);
 
     auto* game = new ChessGame(board, whiteTeam, blackTeam, settings);
 
