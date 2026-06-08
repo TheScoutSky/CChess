@@ -8,6 +8,7 @@
 #include <SDL_image.h>
 #include <iostream>
 
+#include "chess/pieces/Knight.h"
 #include "chess/pieces/Pawn.h"
 #include "chess/pieces/Rook.h"
 
@@ -220,6 +221,9 @@ int ChessGame::openGame() {
     SDL_Texture* whitePawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_pawn.png");
     SDL_Texture* blackPawnTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_pawn.png");
     SDL_Texture* whiteRookTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_rook.png");
+    SDL_Texture* blackRookTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_rook.png");
+    SDL_Texture* whiteKnightTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_knight.png");
+    SDL_Texture* blackKnightTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_knight.png");
 
     Pawn* whitePawn = new Pawn(whiteTeam, board->getField(2, 6), whitePawnTexture);
     board->getField(2, 6)->setPiece(whitePawn);
@@ -229,6 +233,9 @@ int ChessGame::openGame() {
 
     Rook* whiteRook = new Rook(whiteTeam, board->getField(0, 7), whiteRookTexture);
     board->getField(0, 7)->setPiece(whiteRook);
+
+    Knight* blackKnight = new Knight(blackTeam, board->getField(1, 0), blackKnightTexture);
+    board->getField(1, 0)->setPiece(blackKnight);
 
     currentScreen->preload();
 

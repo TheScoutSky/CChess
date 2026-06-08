@@ -53,6 +53,8 @@ add_executable(${PROJECT_NAME}
         src/ui/screens/PlayingScreen.h
         src/chess/pieces/Rook.cpp
         src/chess/pieces/Rook.h
+        src/chess/pieces/Knight.cpp
+        src/chess/pieces/Knight.h
 )
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 target_link_libraries(${PROJECT_NAME} PRIVATE
