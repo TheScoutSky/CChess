@@ -24,7 +24,8 @@ public:
 
     // --- Buttons ---
     void addButton(const std::string& name, const CButton& button) {
-        buttons.insert(std::pair<std::string, CButton>(name, button));
+        buttons.erase(name);
+        buttons.emplace(name, button);
     }
 
     CButton& getButton(const std::string& name) { return buttons.at(name); }
@@ -38,7 +39,6 @@ public:
         return nullptr;
     }
 
-
     // --- Event handling ---
     void handleClick(SDL_MouseButtonEvent event, int mouseX, int mouseY);
     virtual void onClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) {};
@@ -51,7 +51,6 @@ public:
 private:
     // --- State ---
     std::unordered_map<std::string, CButton> buttons;
-
 };
 
 #endif // CCHESS_GAMESCREEN_H

@@ -8,16 +8,14 @@
 class ChessGameSettings {
 
 public:
-
     ChessGameSettings();
 
     // --- Screen settings --- //
     int screenHeight = 1080, screenWidth = 1920;
 
     // --- Board settings --- //
-    int fieldSize = 128, boardOffsetX = 100, boardOffsetY = 100;
+    int fieldSize = 96, boardOffsetX = 576, boardOffsetY = 156;
     int rows = 8, cols = 8;
-
 };
 
 #endif // CCHESS_CHESSGAMESETTINGS_H

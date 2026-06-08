@@ -13,7 +13,7 @@ void GameScreen::handleClick(SDL_MouseButtonEvent event, int mouseX, int mouseY)
     if (button) {
         button->handleClick(event, mouseX, mouseY);
     }
-   onClick(event, mouseX, mouseY);
+    onClick(event, mouseX, mouseY);
 }
 
 // --------------------------------------------------

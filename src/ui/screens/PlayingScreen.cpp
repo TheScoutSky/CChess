@@ -12,11 +12,24 @@
 
 void PlayingScreen::preload() {
     std::cout << "PlayingScreen::preload" << std::endl;
-    TTF_Font* buttonFont = TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 36);
-    font = TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 56);
-    CButton backButton = CButton("Back to Title", buttonFont, SDL_Rect{20, 20, 200, 50});
-    backButton.setButtonColor({70, 130, 180, 255});
-    backButton.setHoverColor({100, 149, 237, 255});
+    TTF_Font* buttonFont =
+        TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 30);
+    font =
+        TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 42);
+
+    const int boardSize =
+        gameInstance->getSettings()->fieldSize * gameInstance->getSettings()->cols;
+    const int centerX = gameInstance->getSettings()->screenWidth / 2;
+    const int buttonWidth = 280;
+    const int buttonHeight = 54;
+    const int buttonX = centerX - buttonWidth / 2;
+    const int buttonY = gameInstance->getSettings()->boardOffsetY + boardSize + 36;
+
+    CButton backButton =
+        CButton("Back to Title", buttonFont, SDL_Rect{buttonX, buttonY, buttonWidth, buttonHeight});
+    backButton.setButtonColor({34, 42, 58, 255});
+    backButton.setHoverColor({58, 72, 92, 255});
+    backButton.setSelectedColor({76, 92, 116, 255});
     backButton.setOnClick([this]() {
         std::cout << "Back to Title button clicked!" << std::endl;
         gameInstance->switchScreen(gameInstance->titleScreen);
@@ -27,53 +40,81 @@ void PlayingScreen::preload() {
 
 void PlayingScreen::onClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) {
 
-     for (auto &field : gameInstance->getBoard()->board) {
-         if (field.isClicked(mouseX, mouseY)) {
-             if (gameInstance->selectedField) {
-                 if (gameInstance->selectedField == &field) {
-                     // Deselect current field
-                     field.isSelected = false;
-                     gameInstance->selectedField = nullptr;
-                 } else if (field.hasPiece() &&  field.getPiece()->team == gameInstance->currentTeam) {
-                     // Select a different piece
-                     gameInstance->selectedField->isSelected = false;
-                     field.isSelected = true;
-                     gameInstance->selectedField = &field;
-                 } else if (gameInstance->selectedField->getPiece()->canMoveTo(&field)) {
-                     std::cout << "Moving piece from " << gameInstance->selectedField->realX << ", " << gameInstance->selectedField->realY
-                               << " to " << field.realX << ", " << field.realY << std::endl;
-                     // Move piece to target field
-                     gameInstance->selectedField->getPiece()->moveTo(&field);
-                     gameInstance->selectedField->isSelected = false;
-                     gameInstance->selectedField = nullptr;
+    for (auto& field : gameInstance->getBoard()->board) {
+        if (field.isClicked(mouseX, mouseY)) {
+            if (gameInstance->selectedField) {
+                if (gameInstance->selectedField == &field) {
+                    // Deselect current field
+                    field.isSelected = false;
+                    gameInstance->selectedField = nullptr;
+                } else if (field.hasPiece() &&
+                           field.getPiece()->team == gameInstance->currentTeam) {
+                    // Select a different piece
+                    gameInstance->selectedField->isSelected = false;
+                    field.isSelected = true;
+                    gameInstance->selectedField = &field;
+                } else if (gameInstance->selectedField->getPiece()->canMoveTo(&field)) {
+                    std::cout << "Moving piece from " << gameInstance->selectedField->realX << ", "
+                              << gameInstance->selectedField->realY << " to " << field.realX << ", "
+                              << field.realY << std::endl;
+                    // Move piece to target field
+                    gameInstance->selectedField->getPiece()->moveTo(&field);
+                    gameInstance->selectedField->isSelected = false;
+                    gameInstance->selectedField = nullptr;
 
-                     if (gameInstance->currentTeam == gameInstance->whiteTeam) {
-                         gameInstance->currentTeam = gameInstance->blackTeam;
-                     } else {
-                         gameInstance->currentTeam = gameInstance->whiteTeam;
-                     }
-                 }
-             } else {
-                 if (field.hasPiece() && field.getPiece()->team == gameInstance->currentTeam) {
-                     field.isSelected = true;
-                     gameInstance->selectedField = &field;
-                 }
-             }
-             std::cout << "Field " << field.realX << ", " << field.realY << " clicked. Selected: " << field.isSelected << std::endl;
-         }
-     }
- }
-
-
-void PlayingScreen::renderScreen(SDL_Renderer *renderer, int mouseX, int mouseY) {
-    gameInstance->getBoard()->draw(renderer, mouseX, mouseY, gameInstance->selectedField);
-
-    std::string turnText = "Turn: " + std::string(gameInstance->currentTeam == gameInstance->whiteTeam ? "White" : "Black");
-    renderText(renderer, font, turnText.c_str(), 800, 30, {255, 255, 255, 255});
+                    if (gameInstance->currentTeam == gameInstance->whiteTeam) {
+                        gameInstance->currentTeam = gameInstance->blackTeam;
+                    } else {
+                        gameInstance->currentTeam = gameInstance->whiteTeam;
+                    }
+                }
+            } else {
+                if (field.hasPiece() && field.getPiece()->team == gameInstance->currentTeam) {
+                    field.isSelected = true;
+                    gameInstance->selectedField = &field;
+                }
+            }
+            std::cout << "Field " << field.realX << ", " << field.realY
+                      << " clicked. Selected: " << field.isSelected << std::endl;
+        }
+    }
 }
 
-void PlayingScreen::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y,
-                           SDL_Color color) {
+void PlayingScreen::renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY) {
+    int width = 0;
+    SDL_GetRendererOutputSize(renderer, &width, nullptr);
+
+    SDL_SetRenderDrawColor(renderer, 12, 15, 23, 255);
+    SDL_RenderClear(renderer);
+
+    const int boardSize =
+        gameInstance->getSettings()->fieldSize * gameInstance->getSettings()->cols;
+    SDL_Rect boardPanel = {gameInstance->getSettings()->boardOffsetX - 18,
+                           gameInstance->getSettings()->boardOffsetY - 18, boardSize + 36,
+                           boardSize + 36};
+
+    SDL_SetRenderDrawColor(renderer, 24, 30, 44, 255);
+    SDL_RenderFillRect(renderer, &boardPanel);
+
+    SDL_SetRenderDrawColor(renderer, 72, 88, 114, 255);
+    SDL_RenderDrawRect(renderer, &boardPanel);
+
+    gameInstance->getBoard()->draw(renderer, mouseX, mouseY, gameInstance->selectedField);
+
+    std::string turnText =
+        "Turn: " +
+        std::string(gameInstance->currentTeam == gameInstance->whiteTeam ? "White" : "Black");
+    int turnTextWidth = 0;
+    int turnTextHeight = 0;
+    TTF_SizeUTF8(font, turnText.c_str(), &turnTextWidth, &turnTextHeight);
+
+    renderText(renderer, font, turnText.c_str(), width / 2 - turnTextWidth / 2,
+               gameInstance->getSettings()->boardOffsetY / 2 - turnTextHeight / 2,
+               {240, 244, 255, 255});
+}
+
+void PlayingScreen::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x,
+                               int y, SDL_Color color) {
     SDL_Surface* surface = TTF_RenderUTF8_Blended(font, text, color);
 
     if (surface == nullptr) {

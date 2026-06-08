@@ -12,13 +12,19 @@ class TitleScreen : public GameScreen {
 
 public:
     // --- Construction ---
-    TitleScreen(ChessGame* gameInstance): GameScreen(gameInstance) {};
+    TitleScreen(ChessGame* gameInstance) : GameScreen(gameInstance) {};
+
+    ~TitleScreen() override;
 
     // --- Rendering ---
     void renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY) override;
 
     // --- Resources ---
     void preload() override;
+
+private:
+    TTF_Font* titleFont = nullptr;
+    TTF_Font* buttonFont = nullptr;
 };
 
 #endif // CCHESS_TITLESCREEN_H
