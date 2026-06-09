@@ -13,17 +13,19 @@
 void PlayingScreen::preload() {
     std::cout << "PlayingScreen::preload" << std::endl;
     TTF_Font* buttonFont =
-        TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 30);
+        TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 28);
     font =
-        TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 42);
+        TTF_OpenFont("/Users/antoniowil/Documents/New project/CChess/assets/fonts/arial.ttf", 38);
 
     const int boardSize =
         gameInstance->getSettings()->fieldSize * gameInstance->getSettings()->cols;
+    const int takePanelHeight = gameInstance->getSettings()->fieldSize - 8;
     const int centerX = gameInstance->getSettings()->screenWidth / 2;
-    const int buttonWidth = 280;
-    const int buttonHeight = 54;
+    const int buttonWidth = 260;
+    const int buttonHeight = 50;
     const int buttonX = centerX - buttonWidth / 2;
-    const int buttonY = gameInstance->getSettings()->boardOffsetY + boardSize + 36;
+    const int buttonY =
+        gameInstance->getSettings()->boardOffsetY + boardSize + takePanelHeight + 66;
 
     CButton backButton =
         CButton("Back to Title", buttonFont, SDL_Rect{buttonX, buttonY, buttonWidth, buttonHeight});
@@ -82,16 +84,69 @@ void PlayingScreen::onClick(SDL_MouseButtonEvent event, int mouseX, int mouseY) 
 
 void PlayingScreen::renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY) {
     int width = 0;
-    SDL_GetRendererOutputSize(renderer, &width, nullptr);
+    int height = 0;
+    SDL_GetRendererOutputSize(renderer, &width, &height);
 
     SDL_SetRenderDrawColor(renderer, 12, 15, 23, 255);
     SDL_RenderClear(renderer);
 
     const int boardSize =
         gameInstance->getSettings()->fieldSize * gameInstance->getSettings()->cols;
-    SDL_Rect boardPanel = {gameInstance->getSettings()->boardOffsetX - 18,
-                           gameInstance->getSettings()->boardOffsetY - 18, boardSize + 36,
-                           boardSize + 36};
+    const int takePanelHeight = gameInstance->getSettings()->fieldSize - 8;
+    const int capturePieceSize = gameInstance->getSettings()->fieldSize - 24;
+    const int panelGap = 24;
+    const int panelMargin = 18;
+
+    // Panel above board for white Takes
+    SDL_Rect whiteTakesRect = {
+        gameInstance->getSettings()->boardOffsetX,
+        gameInstance->getSettings()->boardOffsetY - takePanelHeight - panelGap,
+        boardSize,
+        takePanelHeight,
+    };
+
+    SDL_SetRenderDrawColor(renderer, 24, 30, 44, 255);
+    SDL_RenderFillRect(renderer, &whiteTakesRect);
+
+    SDL_SetRenderDrawColor(renderer, 72, 88, 114, 255);
+    SDL_RenderDrawRect(renderer, &whiteTakesRect);
+
+    // Render White takes
+    int i = 20;
+    for (auto& piece : gameInstance->whiteTeam->getTakenPieces()) {
+        piece->draw(renderer, whiteTakesRect.x + i,
+                    whiteTakesRect.y + whiteTakesRect.h / 2 - capturePieceSize / 2,
+                    capturePieceSize);
+        i += capturePieceSize / 2 + 8;
+    }
+
+    // Panel under board for black Takes
+
+    SDL_Rect blackTakesRect = {
+        gameInstance->getSettings()->boardOffsetX,
+        gameInstance->getSettings()->boardOffsetY + boardSize + panelGap,
+        boardSize,
+        takePanelHeight,
+    };
+
+    SDL_SetRenderDrawColor(renderer, 24, 30, 44, 255);
+    SDL_RenderFillRect(renderer, &blackTakesRect);
+
+    SDL_SetRenderDrawColor(renderer, 72, 88, 114, 255);
+    SDL_RenderDrawRect(renderer, &blackTakesRect);
+
+    // Render Black takes
+    i = 20;
+    for (auto& piece : gameInstance->blackTeam->getTakenPieces()) {
+        piece->draw(renderer, blackTakesRect.x + i,
+                    blackTakesRect.y + blackTakesRect.h / 2 - capturePieceSize / 2,
+                    capturePieceSize);
+        i += capturePieceSize / 2 + 8;
+    }
+
+    SDL_Rect boardPanel = {gameInstance->getSettings()->boardOffsetX - panelMargin,
+                           gameInstance->getSettings()->boardOffsetY - panelMargin,
+                           boardSize + panelMargin * 2, boardSize + panelMargin * 2};
 
     SDL_SetRenderDrawColor(renderer, 24, 30, 44, 255);
     SDL_RenderFillRect(renderer, &boardPanel);
@@ -109,8 +164,7 @@ void PlayingScreen::renderScreen(SDL_Renderer* renderer, int mouseX, int mouseY)
     TTF_SizeUTF8(font, turnText.c_str(), &turnTextWidth, &turnTextHeight);
 
     renderText(renderer, font, turnText.c_str(), width / 2 - turnTextWidth / 2,
-               gameInstance->getSettings()->boardOffsetY / 2 - turnTextHeight / 2,
-               {240, 244, 255, 255});
+               whiteTakesRect.y / 2 - turnTextHeight / 2, {240, 244, 255, 255});
 }
 
 void PlayingScreen::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x,

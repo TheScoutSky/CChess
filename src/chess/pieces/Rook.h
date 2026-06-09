@@ -13,14 +13,16 @@ public:
     RookMoveSet() : ChessMoveSet() {};
 
     // --- Movement ---
-    bool isMoveAllowed(ChessMove move) override;
+    std::vector<ChessField *> getValidMoveFields(ChessBoard *board, ChessField *position) override;
+
+    private:
 };
 
 class Rook : public ChessPiece {
 public:
     // --- Construction ---
-    Rook(ChessTeam* team, ChessField* position, SDL_Texture* texture)
-        : ChessPiece(std::make_unique<RookMoveSet>(), team, position) {
+    Rook(ChessTeam* team, ChessField* position, SDL_Texture* texture, ChessBoard* board)
+        : ChessPiece(std::make_unique<RookMoveSet>(), team, position, board) {
         this->texture = texture;
     };
 

@@ -4,6 +4,9 @@
 
 #ifndef CCHESS_CHESSTEAM_H
 #define CCHESS_CHESSTEAM_H
+#include <vector>
+
+class ChessPiece;
 
 enum ChessTeamColor {
     WHITE,
@@ -16,8 +19,17 @@ public:
     ChessTeam(ChessTeamColor color) : color(color) {};
     ChessTeamColor color;
 
+    void takePiece(ChessPiece* piece) {;
+        takenPieces.push_back(piece);
+    }
+
+    std::vector<ChessPiece*> getTakenPieces() { return takenPieces; }
+
+
 private:
     // --- State ---
+
+    std::vector<ChessPiece*> takenPieces;
 };
 
 #endif // CCHESS_CHESSTEAM_H

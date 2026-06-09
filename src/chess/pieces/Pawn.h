@@ -13,14 +13,14 @@ public:
     PawnMoveSet() : ChessMoveSet() {};
 
     // --- Movement ---
-    bool isMoveAllowed(ChessMove move) override;
+    std::vector<ChessField *> getValidMoveFields(ChessBoard *board, ChessField *position) override;
 };
 
 class Pawn : public ChessPiece {
 public:
     // --- Construction ---
-    Pawn(ChessTeam* team, ChessField* position, SDL_Texture* texture)
-        : ChessPiece(std::make_unique<PawnMoveSet>(), team, position) {
+    Pawn(ChessTeam* team, ChessField* position, SDL_Texture* texture, ChessBoard* board)
+        : ChessPiece(std::make_unique<PawnMoveSet>(), team, position, board) {
         this->texture = texture;
     };
 

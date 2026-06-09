@@ -55,6 +55,8 @@ add_executable(${PROJECT_NAME}
         src/chess/pieces/Rook.h
         src/chess/pieces/Knight.cpp
         src/chess/pieces/Knight.h
+        src/chess/pieces/Bishop.cpp
+        src/chess/pieces/Bishop.h
 )
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 target_link_libraries(${PROJECT_NAME} PRIVATE

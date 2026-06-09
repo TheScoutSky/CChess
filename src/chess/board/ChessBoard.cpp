@@ -39,7 +39,7 @@ ChessField* ChessBoard::getField(int x, int y) {
 // --------------------------------------------------
 
 void ChessBoard::draw(SDL_Renderer *renderer, int mouseX, int mouseY, ChessField* selectedField) {
-    for (auto chess_field : board) {
+    for (auto& chess_field : board) {
         bool isHovered = chess_field.isClicked(mouseX, mouseY);
         bool isHighlighted = (selectedField != nullptr && selectedField->hasPiece() && selectedField->getPiece()->canMoveTo(&chess_field));
         chess_field.draw(renderer, isHovered, isHighlighted);

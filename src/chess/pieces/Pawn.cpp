@@ -10,30 +10,41 @@
 // Movement
 // --------------------------------------------------
 
-bool PawnMoveSet::isMoveAllowed(ChessMove move) {
-    if (move.piece == nullptr || move.from == nullptr || move.to == nullptr) {
-        return false;
+std::vector<ChessField *> PawnMoveSet::getValidMoveFields(ChessBoard *board, ChessField *position) {
+    std::vector<ChessField *> validFields;
+
+    int direction = position->getPiece()->team->color == WHITE ? 1 : -1;
+    int startRow = position->getPiece()->team->color == WHITE ? 1 : 6;
+
+    // Move forward
+    int x = position->x;
+    int y = position->y + direction;
+
+    if (board->isInside(x, y) && !board->getField(x, y)->hasPiece()) {
+        validFields.push_back(board->getField(x, y));
+
+        // Move two squares from starting position
+        if (position->y == startRow) {
+            y += direction;
+            if (board->isInside(x, y) && !board->getField(x, y)->hasPiece()) {
+                validFields.push_back(board->getField(x, y));
+            }
+        }
     }
 
-        int direction = move.piece->team->color == ChessTeamColor::WHITE ? 1 : -1;
-        int startRow = move.piece->team->color == ChessTeamColor::WHITE ? 1 : 6;
+    // Capture diagonally
+    for (int dx : {-1, 1}) {
+        x = position->x + dx;
+        y = position->y + direction;
 
-        int dx = move.to->x - move.from->x;
-        int dy = move.to->y - move.from->y;
-
-        // --- Standard move --- //
-        if (dx == 0 && dy == direction && !move.to->hasPiece()) {
-            return true;
+        if (board->isInside(x, y) && board->getField(x, y)->hasPiece() &&
+            board->getField(x, y)->getPiece()->team != position->getPiece()->team) {
+            validFields.push_back(board->getField(x, y));
         }
+    }
 
-        // --- Initial double move --- //
-        if (dx == 0 && dy == 2 * direction && move.from->y == startRow &&
-            !move.to->hasPiece()) {
-            return true;
-        }
-
-    return false;
-};
+    return validFields;
+}
 
 // --------------------------------------------------
 // Rendering

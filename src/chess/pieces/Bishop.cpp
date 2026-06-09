@@ -1,16 +1,16 @@
 //
-// Created by Antonio Wil on 08.06.26.
+// Created by Antonio Wil on 09.06.26.
 //
 
-#include "Rook.h"
+#include "Bishop.h"
 // --------------------------------------------------
 // Movement
 // --------------------------------------------------
 
-std::vector<ChessField *> RookMoveSet::getValidMoveFields(ChessBoard *board, ChessField *position) {
-    std::vector<ChessField *> validFields;
+std::vector<ChessField*> BishopMoveSet::getValidMoveFields(ChessBoard* board, ChessField* position) {
+    std::vector<ChessField*> validFields;
 
-    int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    int directions[4][2] = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
     for (auto& dir : directions) {
         int x = position->x + dir[0];
@@ -39,7 +39,7 @@ std::vector<ChessField *> RookMoveSet::getValidMoveFields(ChessBoard *board, Che
 // Rendering
 // --------------------------------------------------
 
-bool Rook::draw(SDL_Renderer* renderer, int x, int y, int fieldSize) {
+bool Bishop::draw(SDL_Renderer* renderer, int x, int y, int fieldSize) {
     if (texture == nullptr) {
         return false;
     }

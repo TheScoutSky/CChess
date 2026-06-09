@@ -16,14 +16,14 @@ public:
     KnightMoveSet() : ChessMoveSet() {};
 
     // --- Movement ---
-    bool isMoveAllowed(ChessMove move) override;
+    std::vector<ChessField *> getValidMoveFields(ChessBoard *board, ChessField *position) override;
 };
 
 class Knight : public ChessPiece {
 public:
     // --- Construction ---
-    Knight(ChessTeam* team, ChessField* position, SDL_Texture* texture)
-        : ChessPiece(std::make_unique<KnightMoveSet>(), team, position) {
+    Knight(ChessTeam* team, ChessField* position, SDL_Texture* texture, ChessBoard* board)
+        : ChessPiece(std::make_unique<KnightMoveSet>(), team, position, board) {
         this->texture = texture;
     };
 

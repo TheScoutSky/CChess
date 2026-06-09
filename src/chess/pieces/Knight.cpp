@@ -7,17 +7,27 @@
 // Movement
 // --------------------------------------------------
 
-bool KnightMoveSet::isMoveAllowed(ChessMove move) {
-    if (move.piece == nullptr || move.from == nullptr || move.to == nullptr) {
-        return false;
-    }
-    int dx = abs(move.to->x - move.from->x);
-    int dy = abs(move.to->y - move.from->y);
+std::vector<ChessField *> KnightMoveSet::getValidMoveFields(ChessBoard *board, ChessField *position) {
+    std::vector<ChessField *> validFields;
 
-    if ((dx == 2 && dy == 1) || (dx == 1 && dy == 2)) {
-        return true;
+    int moves[8][2] = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1},
+                       {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
+
+    for (auto& move : moves) {
+        int x = position->x + move[0];
+        int y = position->y + move[1];
+
+        if (board->isInside(x, y)) {
+            ChessField* field = board->getField(x, y);
+
+            if (!field->hasPiece() || field->getPiece()->team != position->getPiece()->team) {
+                validFields.push_back(field);
+            }
+        }
     }
-};
+
+    return validFields;
+}
 
 // --------------------------------------------------
 // Rendering

@@ -30,11 +30,7 @@ public:
         this->realY = (y * settings->fieldSize) + settings->boardOffsetY;
 
         this->size = settings->fieldSize;
-
-        SDL_Rect rect = {realX, realY, size, size};
-        this->rect = rect;
-
-
+        this->rect = {realX, realY, size, size};
     };
 
     // --- Rendering ---

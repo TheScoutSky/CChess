@@ -6,17 +6,19 @@
 #define CCHESS_CHESSMOVE_H
 #include "chess/board/ChessField.h"
 
+class ChessBoard;
 class ChessPiece;
 
 class ChessMove {
 public:
     // --- Construction ---
-    ChessMove(ChessPiece* piece, ChessField* from, ChessField* to)
-        : piece(piece), from(from), to(to) {};
+    ChessMove(ChessBoard* board, ChessPiece* piece, ChessField* from, ChessField* to)
+        : piece(piece), from(from), to(to), board(board) {};
 
     // --- Move data ---
     ChessPiece* piece;
     ChessField *from, *to;
+    ChessBoard* board;
 
 private:
 };

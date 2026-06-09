@@ -7,25 +7,26 @@
 #include <SDL_render.h>
 #include <memory>
 
-#include "chess/board/ChessField.h"
-#include "chess/model/ChessTeam.h"
 #include "chess/moves/ChessMoveSet.h"
+
+class ChessField;
+class ChessTeam;
+class ChessBoard;
 
 class ChessPiece {
 public:
     // --- Construction ---
-    ChessPiece(std::unique_ptr<ChessMoveSet> moveSet, ChessTeam* team, ChessField* position)
-        : moveSet(std::move(moveSet)), team(team), position(position) {};
+    ChessPiece(std::unique_ptr<ChessMoveSet> moveSet, ChessTeam* team, ChessField* position, ChessBoard* board)
+        : moveSet(std::move(moveSet)), team(team), position(position), board(board) {
+
+    };
 
     virtual ~ChessPiece() = default;
 
     // --- Movement ---
     virtual bool canMoveTo(ChessField* field);
-    virtual void moveTo(ChessField* field) {
-        position->setPiece(nullptr);
-        position = field;
-        field->setPiece(this);
-    };
+    virtual void moveTo(ChessField* field);
+    virtual void takePiece(ChessField* field);
 
     // --- Capture state ---
     virtual void capturedBy(ChessPiece& piece) { this->isCaptured = true; };
@@ -38,6 +39,7 @@ public:
  protected:
      // --- State ---
      SDL_Texture* texture = nullptr;
+     ChessBoard* board;
 
  private:
      // --- State ---

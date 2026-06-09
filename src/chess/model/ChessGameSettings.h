@@ -14,8 +14,9 @@ public:
     int screenHeight = 1080, screenWidth = 1920;
 
     // --- Board settings --- //
-    int fieldSize = 96, boardOffsetX = 576, boardOffsetY = 156;
     int rows = 8, cols = 8;
+    int fieldSize = 88, boardOffsetX = (screenWidth - cols * fieldSize) / 2,
+        boardOffsetY = (screenHeight - rows * fieldSize) / 2 - 28;
 };
 
 #endif // CCHESS_CHESSGAMESETTINGS_H

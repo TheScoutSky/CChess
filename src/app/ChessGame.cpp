@@ -8,6 +8,7 @@
 #include <SDL_image.h>
 #include <iostream>
 
+#include "chess/pieces/Bishop.h"
 #include "chess/pieces/Knight.h"
 #include "chess/pieces/Pawn.h"
 #include "chess/pieces/Rook.h"
@@ -224,18 +225,23 @@ int ChessGame::openGame() {
     SDL_Texture* blackRookTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_rook.png");
     SDL_Texture* whiteKnightTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_knight.png");
     SDL_Texture* blackKnightTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_knight.png");
+    SDL_Texture* whiteBishopTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/white_bishop.png");
+    SDL_Texture* blackBishopTexture = loadTexture(renderer, "/Users/antoniowil/Documents/New project/CChess/assets/pieces/black_bishop.png");
 
-    Pawn* whitePawn = new Pawn(whiteTeam, board->getField(2, 6), whitePawnTexture);
+    Pawn* whitePawn = new Pawn(whiteTeam, board->getField(2, 6), whitePawnTexture, board);
     board->getField(2, 6)->setPiece(whitePawn);
 
-    Pawn* blackPawn = new Pawn(blackTeam, board->getField(1, 1), blackPawnTexture);
+    Pawn* blackPawn = new Pawn(blackTeam, board->getField(1, 1), blackPawnTexture, board);
     board->getField(1, 1)->setPiece(blackPawn);
 
-    Rook* whiteRook = new Rook(whiteTeam, board->getField(0, 7), whiteRookTexture);
+    Rook* whiteRook = new Rook(whiteTeam, board->getField(0, 7), whiteRookTexture, board);
     board->getField(0, 7)->setPiece(whiteRook);
 
-    Knight* blackKnight = new Knight(blackTeam, board->getField(1, 0), blackKnightTexture);
+    Knight* blackKnight = new Knight(blackTeam, board->getField(1, 0), blackKnightTexture, board);
     board->getField(1, 0)->setPiece(blackKnight);
+
+    Bishop* blackBishop = new Bishop(blackTeam, board->getField(2, 0), blackBishopTexture, board);
+    board->getField(2, 0)->setPiece(blackBishop);
 
     currentScreen->preload();
 

@@ -10,5 +10,13 @@
 // --------------------------------------------------
 
 bool ChessMoveSet::isMoveAllowed(ChessMove move) {
-    return move.piece != nullptr;
+    std::vector<ChessField*> validFields = getValidMoveFields(move.board, move.from);
+    if (std::find(validFields.begin(), validFields.end(), move.to) == validFields.end()) {
+        return false;
+    }
+    return true;
+}
+std::vector<ChessField*> ChessMoveSet::getValidMoveFields(ChessBoard *board, ChessField *position) {
+    std::vector<ChessField*> validFields;
+    return validFields;
 }

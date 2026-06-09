@@ -16,11 +16,15 @@ public:
 
     // --- Field access ---
     ChessField* getField(int x, int y);
+    bool isInside(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8;
+    };
 
     // --- Fields ---
     std::vector<ChessField> board;
 
     void draw(SDL_Renderer* renderer, int mouseX, int mouseY, ChessField* selectedField);
+
 
 private:
     // --- Board dimensions ---

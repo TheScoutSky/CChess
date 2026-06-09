@@ -5,6 +5,10 @@
 #include "chess/pieces/ChessPiece.h"
 #include <SDL_render.h>
 
+#include "chess/board/ChessField.h"
+#include "chess/model/ChessTeam.h"
+#include "chess/moves/ChessMove.h"
+
 // --------------------------------------------------
 // Movement
 // --------------------------------------------------
@@ -14,9 +18,25 @@ bool ChessPiece::canMoveTo(ChessField* field) {
         return false;
     }
 
-    ChessMove move(this, position, field);
+    ChessMove move(board, this, position, field);
     return this->moveSet->isMoveAllowed(move);
 };
+
+void ChessPiece::moveTo(ChessField *field) {
+    position->setPiece(nullptr);
+    position = field;
+
+    if (field->hasPiece()) {
+        takePiece(field);
+    }
+    field->setPiece(this);
+};
+
+
+void ChessPiece::takePiece(ChessField* field) {
+    this->team->takePiece(field->getPiece());
+    field->setPiece(this);
+}
 
 // --------------------------------------------------
 // Rendering
